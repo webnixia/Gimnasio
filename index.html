@@ -980,7 +980,51 @@
     });
   });
 </script>
+<script>
+/* ✅ CONTADORES ANIMADOS */
+document.querySelectorAll(".counter").forEach(counter => {
+  const finalValue = +counter.dataset.value;
+  let start = 0;
+
+  const update = () => {
+    start += Math.ceil(finalValue / 60);
+    if (start < finalValue) {
+      counter.innerText = start;
+      requestAnimationFrame(update);
+    } else {
+      counter.innerText = finalValue;
+    }
+  };
+
+  update();
+});
+
+/* ✅ GALERÍA QUE CAMBIA SOLA CADA 24HS */
+const dailyImages = [
+  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
+  "https://images.unsplash.com/photo-1554344058-8d1d1dbc5960",
+  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b",
+  "https://images.unsplash.com/photo-1599058917212-d750089bc07c"
+];
+
+const today = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+const dailyIndex = today % dailyImages.length;
+
+document.querySelectorAll(".gallery-item img").forEach((img, index) => {
+  img.src = dailyImages[(dailyIndex + index) % dailyImages.length] + "?auto=format&fit=crop&w=900&q=80";
+});
+
+/* ✅ THREE.JS REACCIONA AL SCROLL */
+window.addEventListener("scroll", () => {
+  if (typeof torusKnot !== "undefined") {
+    const scrollY = window.scrollY * 0.002;
+    torusKnot.rotation.y = scrollY;
+    torusKnot.material.emissiveIntensity = 0.15 + scrollY * 0.2;
+  }
+});
+</script>
 
 </body>
 </html>
+
 
