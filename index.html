@@ -4,627 +4,634 @@
   <meta charset="UTF-8">
   <title>Pulse Fitness | Gimnasio PRO 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Demo de gimnasio profesional 2025 con reservas, planes, clases, automatización por WhatsApp y diseño de última generación.">
+  <meta name="description" content="Demo de gimnasio profesional 2025 con diseño premium, animaciones, planes, clases, simulador, slider y contacto por WhatsApp.">
 
-  <!-- Tipografía -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
 
-  <!-- GSAP + ScrollTrigger -->
+  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
   <style>
-    :root {
-      --bg-main: #050509;
-      --bg-soft: #0d0d15;
-      --accent: #5af0ff;
-      --accent-strong: #00e0ff;
-      --accent-second: #ff2e79;
-      --text-main: #f8f9ff;
-      --text-muted: #a4a7c0;
-      --radius: 22px;
-      --shadow: 0 18px 45px rgba(0,0,0,0.7);
-      --max-width: 1180px;
+    :root{
+      --bg:#050509;
+      --bg-soft:#0e1024;
+      --accent:#00e0ff;
+      --second:#ff2e79;
+      --text:#f4f6ff;
+      --muted:#a4a7c0;
+      --card:#0c0f22;
+      --radius:22px;
+      --max-width:1200px;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+    /* MODO CLARO */
+    body.light-mode{
+      --bg:#f5f6ff;
+      --bg-soft:#ffffff;
+      --card:#ffffff;
+      --text:#111322;
+      --muted:#70738d;
     }
 
-    body {
-      background: radial-gradient(circle at top, #171729, #050509);
-      color: var(--text-main);
-      overflow-x: hidden;
-      scroll-behavior: smooth;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    body{
+      background:var(--bg);
+      color:var(--text);
+      scroll-behavior:smooth;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
-      border-radius: 18px;
+    img{max-width:100%;border-radius:18px;}
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER */
+    header{
+      position:fixed;
+      top:0;left:0;right:0;
+      z-index:1000;
+      background:rgba(4,4,10,.9);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    body.light-mode header{
+      background:rgba(255,255,255,.9);
+      border-bottom:1px solid rgba(0,0,0,.08);
     }
 
-    /* HEADER / NAV */
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      background: rgba(3, 3, 10, 0.92);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .nav {
-      max-width: var(--max-width);
-      margin: auto;
-      padding: 14px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 900;
-      font-size: 1.1rem;
-    }
-    .brand span {
-      font-size: 0.78rem;
-      font-weight: 400;
-      color: var(--text-muted);
-    }
-    .brand-badge {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 0%, #ffffff, #00e0ff);
-      box-shadow: 0 0 18px rgba(0,224,255,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      color: #020308;
-      font-weight: 800;
-    }
-    .menu {
-      display: flex;
-      gap: 20px;
-      font-size: 0.9rem;
-    }
-    .menu a {
-      opacity: 0.8;
-      position: relative;
-    }
-    .menu a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-second));
-      transition: width .25s ease;
-    }
-    .menu a:hover {
-      opacity: 1;
-    }
-    .menu a:hover::after {
-      width: 100%;
+    .nav{
+      max-width:var(--max-width);
+      margin:auto;
+      padding:14px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
     }
 
-    .nav-cta {
-      padding: 8px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(90,240,255,0.7);
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: radial-gradient(circle at top, rgba(0,224,255,0.18), rgba(0,0,0,0.9));
-      box-shadow: 0 0 20px rgba(0,224,255,0.6);
-      white-space: nowrap;
+    .brand{
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:1.05rem;
     }
 
-    @media (max-width: 900px) {
-      .menu { display: none; }
-      .nav { justify-content: space-between; }
+    .brand span{
+      font-size:.75rem;
+      color:var(--muted);
+      font-weight:400;
     }
 
-    /* LAYOUT BASE */
-main {
-  padding-top: 80px;
-  position: relative;
-  z-index: 5;
-  background: radial-gradient(circle at top, #101427, #050509);
-}
-    section {
-      padding: 90px 20px;
-    }
-    .container {
-      max-width: var(--max-width);
-      margin: auto;
-    }
-    .title {
-      font-size: 2.6rem;
-      margin-bottom: 10px;
-    }
-    .subtitle {
-      color: var(--text-muted);
-      margin-bottom: 45px;
-      max-width: 640px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    .badge{
+      width:34px;height:34px;border-radius:50%;
+      background:radial-gradient(circle,#fff,#00e0ff);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;color:#000;font-size:.9rem;
+      box-shadow:0 0 14px rgba(0,224,255,.8);
     }
 
-    /* HERO + THREE.JS */
-.hero {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  background:
-    linear-gradient(rgba(5,5,9,0.85), rgba(5,5,9,0.95)),
-    url("https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1600&q=80")
-    center/cover no-repeat;
-}
-#hero-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      max-width: var(--max-width);
-      margin: auto;
-      padding: 40px 22px 90px;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 40px;
-      align-items: center;
-    }
-    .hero-pre {
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-    .hero h1 {
-      font-size: 3.3rem;
-      font-weight: 900;
-      line-height: 1.1;
-    }
-    .hero h1 span {
-      background: linear-gradient(90deg, var(--accent), var(--accent-second));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .hero p {
-      margin-top: 14px;
-      color: var(--text-muted);
-      max-width: 520px;
-    }
-    .hero-ctas {
-      margin-top: 26px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-    .btn-primary {
-      padding: 14px 30px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, var(--accent), var(--accent-second));
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 16px 40px rgba(0,224,255,0.8);
-      font-size: 0.95rem;
-      color: #020308;
-    }
-    .btn-secondary {
-      padding: 13px 26px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(5,5,14,0.85);
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-    .hero-stats {
-      margin-top: 22px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .hero-stat strong {
-      font-size: 1.2rem;
-      color: var(--accent);
-      display: block;
+    .menu{
+      display:flex;
+      gap:22px;
+      font-size:.85rem;
     }
 
-    .hero-card {
-      background: rgba(6,6,18,0.92);
-      border-radius: 24px;
-      padding: 24px;
-      border: 1px solid rgba(90,240,255,0.4);
-      box-shadow: var(--shadow);
-    }
-    .hero-card h3 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-    }
-    .hero-card-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 8px 0;
-      border-bottom: 1px dashed rgba(255,255,255,0.12);
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .hero-card-row:last-child {
-      border-bottom: none;
-    }
-    .hero-card-price {
-      font-weight: 700;
-      color: var(--accent-strong);
-    }
-    .hero-card-tag {
-      margin-top: 12px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
+    .menu a{
+      opacity:.8;
+      position:relative;
     }
 
-    @media (max-width: 900px) {
-      .hero-inner {
-        grid-template-columns: 1fr;
-        padding-top: 100px;
-      }
-      .hero h1 {
-        font-size: 2.4rem;
-      }
+    .menu a::after{
+      content:"";
+      position:absolute;
+      left:0;bottom:-4px;
+      width:0;height:2px;
+      background:linear-gradient(90deg,var(--accent),var(--second));
+      transition:width .25s ease;
     }
 
-    /* CARDS & SECCIONES */
-    .card {
-      background: radial-gradient(circle at top left, rgba(90,240,255,0.08), rgba(7,8,18,0.98));
-      border-radius: var(--radius);
-      padding: 26px;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: var(--shadow);
-      font-size: 0.9rem;
-      color: var(--text-muted);
+    .menu a:hover{
+      opacity:1;
     }
-    .card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 6px;
-      color: var(--text-main);
+    .menu a:hover::after{
+      width:100%;
     }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      font-size: 0.75rem;
-      color: var(--text-muted);
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
+
+    .nav-cta{
+      padding:8px 18px;
+      border-radius:999px;
+      border:1px solid var(--accent);
+      box-shadow:0 0 18px rgba(0,224,255,.7);
+      font-size:.8rem;
+      white-space:nowrap;
+    }
+
+    /* SWITCH MODO DIA/NOCHE */
+    .toggle-wrap{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.7rem;
+      color:var(--muted);
+    }
+    .toggle{
+      width:40px;height:20px;
+      border-radius:999px;
+      background:#111;
+      position:relative;
+      cursor:pointer;
+    }
+    .toggle-circle{
+      position:absolute;
+      top:2px;left:2px;
+      width:16px;height:16px;
+      border-radius:50%;
+      background:#fff;
+      transition:transform .25s ease;
+    }
+    body.light-mode .toggle{
+      background:#ddd;
+    }
+    body.light-mode .toggle-circle{
+      transform:translateX(20px);
+    }
+
+    @media(max-width:900px){
+      .menu{display:none;}
+    }
+
+    /* LAYOUT */
+    main{padding-top:80px;}
+    section{
+      padding:90px 20px;
+      background:radial-gradient(circle at top,#101427,var(--bg));
+    }
+    body.light-mode section{
+      background:linear-gradient(#f4f5ff,#ffffff);
+    }
+    .container{
+      max-width:var(--max-width);
+      margin:auto;
+    }
+    .title{
+      font-size:2.6rem;
+      margin-bottom:10px;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin-bottom:40px;
+      max-width:600px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:24px;
+    }
+
+    /* HERO con VIDEO */
+    .hero{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      background:#050509;
+    }
+
+    .hero-video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(.35);
+      z-index:0;
+    }
+
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top,rgba(0,224,255,.25),rgba(0,0,0,.8));
+      z-index:1;
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      max-width:var(--max-width);
+      margin:auto;
+      padding:40px 22px;
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:40px;
+      align-items:center;
+    }
+
+    @media(max-width:900px){
+      .hero-inner{grid-template-columns:1fr;}
+      .hero{min-height:auto;padding-top:40px;padding-bottom:40px;}
+    }
+
+    .hero h1{
+      font-size:3.2rem;
+      font-weight:900;
+    }
+    .hero h1 span{color:var(--accent);}
+    .hero p{
+      margin-top:14px;
+      color:var(--muted);
+      max-width:520px;
+    }
+
+    .hero-ctas{
+      margin-top:26px;
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .btn-primary{
+      padding:14px 30px;
+      border-radius:999px;
+      border:none;
+      background:linear-gradient(135deg,var(--accent),var(--second));
+      font-weight:700;
+      cursor:pointer;
+      color:#020210;
+    }
+
+    .btn-secondary{
+      padding:13px 26px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.3);
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      font-size:.9rem;
+    }
+    body.light-mode .btn-secondary{
+      border-color:rgba(0,0,0,.2);
+    }
+
+    .hero-card{
+      background:rgba(0,0,0,.78);
+      border-radius:24px;
+      padding:24px;
+      border:1px solid rgba(255,255,255,.14);
+    }
+    body.light-mode .hero-card{
+      background:#ffffffd9;
+      border-color:rgba(0,0,0,.08);
+    }
+
+    .hero-card-row{
+      display:flex;
+      justify-content:space-between;
+      border-bottom:1px dashed rgba(255,255,255,.15);
+      padding:8px 0;
+      font-size:.85rem;
+      color:var(--muted);
+    }
+    body.light-mode .hero-card-row{
+      border-bottom:1px dashed rgba(0,0,0,.1);
+    }
+    .hero-card-row:last-child{border-bottom:none;}
+
+    .price{color:var(--accent);font-weight:700;}
+
+    .hero-note{
+      font-size:.75rem;
+      color:var(--muted);
+      margin-top:10px;
+    }
+
+    /* CONTADORES */
+    .stats{
+      margin-top:26px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:20px;
+      font-size:.85rem;
+      color:var(--muted);
+    }
+    .stat strong{
+      display:block;
+      font-size:1.4rem;
+      color:var(--accent);
+    }
+
+    /* CARDS GENERALES */
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:26px;
+      border:1px solid rgba(255,255,255,.1);
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    body.light-mode .card{
+      border-color:rgba(0,0,0,.08);
+    }
+    .card h3{
+      font-size:1.1rem;
+      margin-bottom:6px;
+      color:var(--text);
     }
 
     /* PLANES */
-    .plans-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-    .plan {
-      position: relative;
-      overflow: hidden;
-    }
-    .plan h3 {
-      margin-bottom: 8px;
-    }
-    .plan-price {
-      font-size: 1.6rem;
-      font-weight: 800;
-      margin: 10px 0 4px;
-      color: var(--accent);
-    }
-    .plan small {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .plan ul {
-      margin-top: 12px;
-      list-style: none;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .plan ul li {
-      margin-bottom: 6px;
-    }
-    .plan-tag {
-      position: absolute;
-      right: 16px;
-      top: 16px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .plan-price{
+      font-size:1.6rem;
+      font-weight:800;
+      color:var(--accent);
+      margin:10px 0 6px;
     }
 
-    /* GALERÍA / EXPERIENCIA */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+    .plan-tag{
+      display:inline-block;
+      font-size:.7rem;
+      padding:3px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.35);
+      margin-bottom:8px;
     }
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: var(--shadow);
+    body.light-mode .plan-tag{
+      border-color:rgba(0,0,0,.25);
     }
-    .gallery-item img {
-      transition: transform .5s ease;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+
+    .card ul{
+      list-style:none;
+      margin-top:10px;
+      font-size:.83rem;
     }
-    .gallery-item:hover img {
-      transform: scale(1.07);
+    .card ul li{margin-bottom:4px;}
+
+    /* SLIDER EXPERIENCIA */
+    .slider{
+      position:relative;
+      overflow:hidden;
+      border-radius:22px;
+      margin-bottom:26px;
+      border:1px solid rgba(255,255,255,.12);
     }
-    .gallery-label {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(3,3,10,0.8);
-      font-size: 0.75rem;
+    .slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity .7s ease;
     }
+    .slide img{
+      width:100%;
+      height:360px;
+      object-fit:cover;
+      border-radius:0;
+    }
+    .slide.active{opacity:1;}
+
+    .slider-dots{
+      position:absolute;
+      left:50%;bottom:10px;
+      transform:translateX(-50%);
+      display:flex;gap:6px;
+    }
+    .slider-dot{
+      width:8px;height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.4);
+      border:none;
+      cursor:pointer;
+    }
+    .slider-dot.active{background:#fff;}
+
+    /* GALERÍA PEQUEÑA */
+    .gallery-item{
+      overflow:hidden;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .gallery-item img{
+      transition:transform .4s ease;
+      height:220px;
+      width:100%;
+      object-fit:cover;
+    }
+    .gallery-item:hover img{transform:scale(1.05);}
 
     /* TESTIMONIOS */
-    .testi {
-      background: rgba(255,255,255,0.02);
-      border-radius: var(--radius);
-      padding: 24px;
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 0.88rem;
-      color: var(--text-muted);
+    .testi{
+      background:rgba(255,255,255,.02);
+      border-radius:var(--radius);
+      padding:24px;
+      border:1px solid rgba(255,255,255,.1);
+      font-size:.9rem;
+      color:var(--muted);
     }
-    .testi strong {
-      display: block;
-      margin-top: 10px;
-      color: var(--text-main);
+    body.light-mode .testi{
+      background:#fff;
+      border-color:rgba(0,0,0,.08);
     }
-
-    /* SIMULADOR VISUAL */
-    select, input {
-      border-radius: 12px;
-      border: none;
-      padding: 10px 12px;
-      width: 100%;
-      margin-top: 8px;
-      background: rgba(0,0,0,0.5);
-      color: var(--text-main);
-      font-size: 0.9rem;
+    .testi strong{
+      display:block;margin-top:8px;color:var(--text);
     }
 
-    /* HORARIOS + MAPA */
-    .hours-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.86rem;
-      margin-top: 12px;
+    /* TABLA HORARIOS */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.86rem;
+      margin-top:10px;
     }
-    .hours-table tr {
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+    tr{
+      border-bottom:1px solid rgba(255,255,255,.12);
     }
-    .hours-table td {
-      padding: 7px 0;
-      color: var(--text-muted);
+    body.light-mode tr{
+      border-bottom:1px solid rgba(0,0,0,.06);
     }
-    .hours-table td:first-child {
-      width: 40%;
+    td{
+      padding:7px 0;
+      color:var(--muted);
+    }
+    td:first-child{width:40%;}
+
+    iframe{
+      width:100%;
+      height:260px;
+      border:none;
+      border-radius:24px;
     }
 
-    iframe {
-      width: 100%;
-      height: 280px;
-      border-radius: 24px;
-      border: none;
-      box-shadow: var(--shadow);
+    /* SIMULADOR */
+    .sim-options{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:12px;
+    }
+    .sim-btn{
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.25);
+      background:transparent;
+      color:var(--text);
+      font-size:.8rem;
+      cursor:pointer;
+    }
+    body.light-mode .sim-btn{
+      border-color:rgba(0,0,0,.25);
+    }
+    .sim-btn.active{
+      background:linear-gradient(135deg,var(--accent),var(--second));
+      color:#020210;
+      border-color:transparent;
+    }
+
+    .sim-result{
+      margin-top:14px;
+      font-size:.87rem;
+      color:var(--muted);
     }
 
     /* FOOTER */
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background: #040409;
-      padding: 36px 20px 30px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+    footer{
+      background:#020210;
+      padding:36px 20px;
+      border-top:1px solid rgba(255,255,255,.1);
+      font-size:.8rem;
+      color:var(--muted);
     }
-    .footer-inner {
-      max-width: var(--max-width);
-      margin: auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
+    body.light-mode footer{
+      background:#ffffff;
+      border-top-color:rgba(0,0,0,.08);
     }
-
-    /* WHATSAPP FLOAT */
-    .whatsapp-float {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #25D366;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      text-decoration: none;
-      box-shadow: 0 0 28px #25D366;
-      z-index: 1100;
-      animation: pulse 2.2s infinite;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.7); }
-      70% { box-shadow: 0 0 0 20px rgba(37,211,102,0); }
-      100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+    .footer-inner{
+      max-width:var(--max-width);
+      margin:auto;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:8px;
     }
 
-    /* ANIMACIONES BASE (GSAP) */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
+    /* WHATSAPP */
+    .whatsapp{
+      position:fixed;
+      right:22px;bottom:22px;
+      width:64px;height:64px;
+      background:#25D366;
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:30px;
+      box-shadow:0 0 28px #25D366;
+      z-index:999;
+      text-decoration:none;
     }
-    .reveal-scale {
-      opacity: 0;
-      transform: scale(0.95);
+
+    /* REVEAL BASE */
+    .reveal{
+      opacity:0;
+      transform:translateY(30px);
     }
   </style>
 </head>
 
 <body>
+
 <header>
   <div class="nav">
     <div class="brand">
-      <div class="brand-badge">PF</div>
+      <div class="badge">PF</div>
       Pulse Fitness
-      <span>Demo de gimnasio profesional 2025</span>
+      <span>Demo gimnasio profesional 2025</span>
     </div>
+
     <nav class="menu">
       <a href="#servicios">Servicios</a>
       <a href="#planes">Planes</a>
       <a href="#experiencia">Experiencia</a>
       <a href="#clases">Clases</a>
+      <a href="#simulador">Simulador</a>
       <a href="#contacto">Horarios</a>
     </nav>
-    <a href="https://wa.me/5490000000000" target="_blank" class="nav-cta">
-      <span>Hablar por WhatsApp</span>
-    </a>
+
+    <div class="nav-right">
+      <div class="toggle-wrap">
+        <span>🌙</span>
+        <div class="toggle" id="modeToggle">
+          <div class="toggle-circle"></div>
+        </div>
+        <span>☀️</span>
+      </div>
+      <a href="https://wa.me/5490000000000" target="_blank" class="nav-cta">Hablar por WhatsApp</a>
+    </div>
   </div>
 </header>
 
 <main>
+
   <!-- HERO -->
   <section class="hero" id="inicio">
-    <canvas id="hero-canvas"></canvas>
+    <video class="hero-video" autoplay muted loop playsinline>
+      <!-- Video demo de gimnasio (puede cambiarse por uno propio) -->
+      <source src="https://cdn.coverr.co/videos/coverr-a-cross-fit-workout-1512/1080p.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+
     <div class="hero-inner">
-      <div class="hero-copy">
-        <div class="hero-pre reveal">Demo visual · Gimnasio 2025</div>
-        <h1 class="reveal">Transformá tu <span>gimnasio</span> en una máquina de ventas.</h1>
+      <div>
+        <h1 class="reveal">Transformá tu <span>gimnasio</span> en una máquina de socios.</h1>
         <p class="reveal">
-          Esta demo muestra cómo podría verse tu gimnasio con reservas online, clases,
-          planes y automatización por WhatsApp. Sin apps raras, todo desde una sola web.
+          Demo visual premium con clases, planes, automatización por WhatsApp y todo listo para impresionar a tus clientes.
         </p>
+
         <div class="hero-ctas reveal">
-          <button class="btn-primary" onclick="openWhatsApp('Hola, vi la demo de gimnasio Pulse Fitness y quiero algo así para mi negocio')">
-            Quiero un sitio así
+          <button class="btn-primary" onclick="openWhatsApp('Hola, vi la demo Pulse Fitness y quiero una web así para mi gimnasio')">
+            Quiero una web así
           </button>
           <button class="btn-secondary" onclick="document.getElementById('planes').scrollIntoView({behavior:'smooth'})">
-            Ver planes en la demo
+            Ver planes de ejemplo
           </button>
         </div>
-   <div class="hero-stats reveal">
-  <div class="hero-stat">
-    <strong class="counter" data-value="350">0</strong>
-    socios activos en la demo
-  </div>
-  <div class="hero-stat">
-    <strong class="counter" data-value="24">0</strong>
-    reservas por WhatsApp
-  </div>
-  <div class="hero-stat">
-    <strong class="counter" data-value="3">0</strong>
-    veces más consultas en 30 días
-  </div>
-  </div>
-          <div class="hero-stat">
-            <strong>+350</strong>
-            socios activos en la demo
+
+        <div class="stats reveal" id="stats">
+          <div class="stat">
+            <strong data-counter data-target="350">0</strong>
+            socios activos en el sistema
           </div>
-          <div class="hero-stat">
-            <strong>24/7</strong>
-            reservas por WhatsApp
+          <div class="stat">
+            <strong data-counter data-target="800">0</strong>
+            m² de sala equipados
           </div>
-          <div class="hero-stat">
-            <strong>3x</strong>
-            más consultas en 30 días
+          <div class="stat">
+            <strong data-counter data-target="120">0</strong>
+            clases grupales al mes
           </div>
         </div>
       </div>
 
-      <div class="hero-card reveal-scale">
-        <h3>Clases más reservadas</h3>
+      <div class="hero-card reveal">
+        <h3>Ejemplo de planes que se podrían mostrar</h3>
         <div class="hero-card-row">
-          <div>
-            <div>Funcional HIIT</div>
-            <small>Grupos reducidos · Alta intensidad</small>
-          </div>
-          <div class="hero-card-price">$7.500</div>
+          <div>Musculación Full · acceso total</div><div class="price">$9.900</div>
         </div>
         <div class="hero-card-row">
-          <div>
-            <div>Musculación Full</div>
-            <small>Acceso total sala de pesas</small>
-          </div>
-          <div class="hero-card-price">$9.900</div>
+          <div>Funcional + Pesas · grupos reducidos</div><div class="price">$14.900</div>
         </div>
         <div class="hero-card-row">
-          <div>
-            <div>Plan Transformación 90 días</div>
-            <small>Rutina + seguimiento + nutrición</small>
-          </div>
-          <div class="hero-card-price">$39.900</div>
+          <div>Transformación 90 días · seguimiento completo</div><div class="price">$29.900</div>
         </div>
-        <p class="hero-card-tag">Ejemplo de cómo mostrar productos/servicios en tu rubro.</p>
+        <p class="hero-note">Todo es demo visual. El cliente solo reemplaza precios, textos y horarios por los suyos.</p>
       </div>
     </div>
   </section>
@@ -632,39 +639,34 @@ main {
   <!-- SERVICIOS -->
   <section id="servicios">
     <div class="container">
-      <div class="chip reveal">
-        <span class="badge-dot"></span> Servicios principales
-      </div>
-      <h2 class="title reveal">Servicios pensados para retener socios</h2>
+      <h2 class="title reveal">Servicios que tu gimnasio puede mostrar</h2>
       <p class="subtitle reveal">
-        Esta estructura está pensada para mostrar de forma clara todo lo que ofrece tu gimnasio:
-        musculación, clases, planes personalizados y beneficios para socios.
+        La idea es que el dueño vea todo lo que podría ofrecer de forma ordenada: musculación, clases, seguimiento y beneficios.
       </p>
-
       <div class="grid">
         <div class="card reveal">
           <h3>Musculación completa</h3>
-          <p>Área equipada con máquinas, pesos libres y zona de fuerza. Ideal para socios que entrenan todos los días.</p>
+          Sala equipada con máquinas, pesos libres y zona de fuerza.
         </div>
         <div class="card reveal">
-          <h3>Clases funcionales</h3>
-          <p>Funcional, HIIT, GAP, localizada y más, en grupos reducidos para generar comunidad y resultados rápidos.</p>
+          <h3>Clases funcionales & HIIT</h3>
+          Grupos reducidos para quemar grasa y mejorar resistencia.
         </div>
         <div class="card reveal">
-          <h3>Personal Trainer</h3>
-          <p>Sesiones personalizadas con seguimiento, ideal para clientes que quieren resultados concretos en poco tiempo.</p>
+          <h3>Personal trainer</h3>
+          Seguimiento individual para resultados rápidos y medibles.
         </div>
         <div class="card reveal">
           <h3>Evaluación física</h3>
-          <p>Mediciones, pliegues, fotos comparativas y seguimiento mensual para mostrar resultados.</p>
+          Medidas, pliegues, fotos comparativas y control mensual.
         </div>
         <div class="card reveal">
           <h3>Planes online</h3>
-          <p>Rutinas enviadas por WhatsApp o app, para quienes no pueden ir todos los días al gimnasio.</p>
+          Rutinas por WhatsApp para quienes entrenan desde casa.
         </div>
         <div class="card reveal">
           <h3>Lockers & amenities</h3>
-          <p>Duchas, lockers, toallas y pequeños detalles que generan sensación de gimnasio “premium”.</p>
+          Duchas, lockers y detalles que dan sensación de gimnasio premium.
         </div>
       </div>
     </div>
@@ -673,96 +675,99 @@ main {
   <!-- PLANES -->
   <section id="planes">
     <div class="container">
-      <div class="chip reveal">
-        <span class="badge-dot"></span> Planes de ejemplo
-      </div>
       <h2 class="title reveal">Planes mensuales listos para vender</h2>
       <p class="subtitle reveal">
-        Solo tenés que cambiar precios y nombres. El diseño ya está pensado para mostrar planes de forma clara y atractiva.
+        Solo hay que cambiar precios y beneficios. El diseño ya está pensado para que el cliente entienda rápido cada plan.
       </p>
-
-      <div class="plans-grid">
-        <div class="card plan reveal-scale">
+      <div class="grid">
+        <div class="card reveal">
           <div class="plan-tag">Inicio</div>
           <h3>Plan Base</h3>
-          <p>Ideal para quienes recién empiezan.</p>
+          <p>Ideal para quienes arrancan.</p>
           <div class="plan-price">$9.900</div>
-          <small>Acceso libre sala de musculación.</small>
           <ul>
-            <li>· Acceso de Lunes a Viernes</li>
+            <li>· Acceso sala musculación</li>
             <li>· Asesoramiento inicial</li>
             <li>· Rutina básica impresa</li>
           </ul>
         </div>
 
-        <div class="card plan reveal-scale">
+        <div class="card reveal">
           <div class="plan-tag">Más elegido</div>
           <h3>Plan Full</h3>
-          <p>Perfecto para quienes entrenan en serio.</p>
+          <p>Para quienes entrenan en serio.</p>
           <div class="plan-price">$14.900</div>
-          <small>Musculación + clases grupales.</small>
           <ul>
-            <li>· Acceso Lunes a Sábado</li>
-            <li>· Todas las clases incluidas</li>
-            <li>· Evaluación física mensual</li>
+            <li>· Musculación + clases grupales</li>
+            <li>· Evaluación mensual</li>
+            <li>· Soporte por WhatsApp</li>
           </ul>
         </div>
 
-        <div class="card plan reveal-scale">
+        <div class="card reveal">
           <div class="plan-tag">Premium</div>
-          <h3>Plan Transformación</h3>
-          <p>Para mostrar que tu gimnasio también vende resultados.</p>
+          <h3>Transformación</h3>
+          <p>Vende resultados, no solo máquinas.</p>
           <div class="plan-price">$24.900</div>
-          <small>Entrenamiento + nutrición + seguimiento.</small>
           <ul>
-            <li>· Seguimiento semanal</li>
-            <li>· Contacto directo con el coach</li>
-            <li>· Antes y después en 90 días</li>
+            <li>· Plan 90 días con seguimiento</li>
+            <li>· Contacto directo con coach</li>
+            <li>· Antes & después de ejemplo</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- EXPERIENCIA / GALERÍA -->
+  <!-- EXPERIENCIA: SLIDER + GALERÍA -->
   <section id="experiencia">
     <div class="container">
-      <div class="chip reveal">
-        <span class="badge-dot"></span> Experiencia visual
-      </div>
-      <h2 class="title reveal">Así se ve entrenar en tu gimnasio</h2>
+      <h2 class="title reveal">Experiencia visual del gimnasio</h2>
       <p class="subtitle reveal">
-        Fotos realistas de entrenamiento, pesas y clases para que el cliente se imagine ya mismo entrenando en tu espacio.
+        Fotos reales ayudan a que el dueño imagine su propio espacio con este tipo de diseño.
       </p>
 
-      <div class="gallery-grid">
-        <div class="gallery-item reveal-scale">
-          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80" alt="Zona de pesas">
-          <div class="gallery-label">Zona de pesas</div>
+      <!-- Slider automático -->
+      <div class="slider reveal">
+        <div class="slide active">
+          <img src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=1400&q=80" alt="Entrenamiento funcional">
         </div>
-        <div class="gallery-item reveal-scale">
-          <img src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=900&q=80" alt="Entrenamiento funcional">
-          <div class="gallery-label">Entrenamiento funcional</div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1400&q=80" alt="Zona de pesas">
         </div>
-        <div class="gallery-item reveal-scale">
-          <img src="https://images.unsplash.com/photo-1554344058-8d1d1dbc5960?auto=format&fit=crop&w=900&q=80" alt="Clases grupales">
-          <div class="gallery-label">Clases grupales</div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1554344058-8d1d1dbc5960?auto=format&fit=crop&w=1400&q=80" alt="Clases grupales">
+        </div>
+
+        <div class="slider-dots">
+          <button class="slider-dot active" data-slide="0"></button>
+          <button class="slider-dot" data-slide="1"></button>
+          <button class="slider-dot" data-slide="2"></button>
+        </div>
+      </div>
+
+      <!-- Galería fija -->
+      <div class="grid">
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80" alt="Sala de fuerza">
+        </div>
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1554344058-8d1d1dbc5960?auto=format&fit=crop&w=900&q=80" alt="Entrenamiento personal">
+        </div>
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1584466977773-e625c37cdd50?auto=format&fit=crop&w=900&q=80" alt="Zona de cardio">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CLASES / HORARIOS DEMO -->
+  <!-- CLASES -->
   <section id="clases">
     <div class="container">
-      <div class="chip reveal">
-        <span class="badge-dot"></span> Agenda de clases (demo)
-      </div>
       <h2 class="title reveal">Clases grupales organizadas</h2>
       <p class="subtitle reveal">
-        Esta grilla es demo visual. Podés usarla para mostrar tus horarios de clases de manera clara y atractiva.
+        Esta grilla es solo demo. El dueño podría reemplazar textos por sus propios horarios y clases.
       </p>
-
       <div class="grid">
         <div class="card reveal">
           <h3>Lunes, Miércoles y Viernes</h3>
@@ -774,57 +779,56 @@ main {
         </div>
         <div class="card reveal">
           <h3>Sábados</h3>
-          <p>Clase especial “Full Body” · 10:00</p>
+          <p>Full Body especial · 10:00</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SIMULADOR VISUAL DE MEMBRESÍA -->
-  <section>
+  <!-- SIMULADOR -->
+  <section id="simulador">
     <div class="container">
-      <div class="chip reveal">
-        <span class="badge-dot"></span> Simulador visual
-      </div>
-      <h2 class="title reveal">Cómo se vería un sistema de reservas y membresías</h2>
+      <h2 class="title reveal">Simulador visual de plan</h2>
       <p class="subtitle reveal">
-        Esto es solo una demo visual para mostrar al cliente todo lo que se puede automatizar: reservas, horarios y contacto por WhatsApp.
+        Acá el cliente ve cómo podría funcionar un sistema simple que recomienda un plan según objetivo y días de entrenamiento.
       </p>
 
       <div class="grid">
         <div class="card reveal">
-          <h3>Elegí un objetivo</h3>
-          <select>
-            <option>Quiero bajar de peso</option>
-            <option>Quiero ganar masa muscular</option>
-            <option>Quiero rendimiento deportivo</option>
-            <option>Quiero mantenerme activo</option>
-          </select>
-          <h3 style="margin-top:16px;">Días por semana</h3>
-          <select>
-            <option>2 veces por semana</option>
-            <option>3 veces por semana</option>
-            <option>4 veces por semana</option>
-            <option>5+ veces por semana</option>
-          </select>
+          <h3>1. Elegí un objetivo</h3>
+          <div class="sim-options" id="goalOptions">
+            <button class="sim-btn active" data-goal="bajar">Bajar de peso</button>
+            <button class="sim-btn" data-goal="masa">Ganar masa muscular</button>
+            <button class="sim-btn" data-goal="rendimiento">Rendimiento deportivo</button>
+          </div>
+
+          <h3 style="margin-top:18px;">2. Días por semana</h3>
+          <div class="sim-options" id="daysOptions">
+            <button class="sim-btn active" data-days="2">2 veces</button>
+            <button class="sim-btn" data-days="3">3 veces</button>
+            <button class="sim-btn" data-days="4">4+ veces</button>
+          </div>
         </div>
 
         <div class="card reveal">
           <h3>Resultado de ejemplo</h3>
-          <p>Tu cliente vería algo así después de elegir su objetivo y frecuencia:</p>
-          <ul style="margin-top:10px;font-size:0.85rem;">
-            <li>· Plan recomendado: <strong>Full</strong> + 3 clases funcionales</li>
-            <li>· Seguimiento quincenal por WhatsApp</li>
-            <li>· Recordatorios automáticos de asistencia</li>
-          </ul>
-          <p style="margin-top:16px;">Todo esto se puede automatizar con tu marca y tus precios.</p>
+          <div class="sim-result" id="simResult">
+            Plan sugerido: <strong>Base</strong><br>
+            · Musculación 2x por semana<br>
+            · Rutina simple de adaptación<br>
+            · Control cada 30 días<br>
+          </div>
+
+          <p style="margin-top:16px;">
+            Todo esto es visual. En una web real, esto podría conectarse con WhatsApp o un sistema de reservas para que el socio deje sus datos.
+          </p>
         </div>
 
         <div class="card reveal">
-          <h3>¿Querés ver esto en tu negocio?</h3>
-          <p>Podés usar esta misma lógica para vender planes online, membresías y clases especiales.</p>
-          <button class="btn-primary" style="margin-top:16px;" onclick="openWhatsApp('Hola, vi el simulador de membresías del demo de gimnasio y quiero algo así para mi negocio')">
-            Quiero este sistema para mi gimnasio
+          <h3>¿Querés algo así en tu gimnasio?</h3>
+          <p>Este simulador es perfecto para captar leads: el usuario juega 10 segundos y luego deja su contacto.</p>
+          <button class="btn-primary" style="margin-top:16px;" onclick="openWhatsApp('Hola, vi el simulador de plan en la demo y quiero algo similar para mi gimnasio')">
+            Quiero un simulador como este
           </button>
         </div>
       </div>
@@ -834,60 +838,53 @@ main {
   <!-- TESTIMONIOS -->
   <section>
     <div class="container">
-      <div class="chip reveal">
-        <span class="badge-dot"></span> Testimonios demo
-      </div>
-      <h2 class="title reveal">Clientes que entrenan y se quedan</h2>
+      <h2 class="title reveal">Testimonios (demo)</h2>
       <div class="grid">
         <div class="testi reveal">
           ⭐⭐⭐⭐⭐<br>
-          “Desde que entreno acá siento que es mi lugar. Clases claras, horarios ordenados y todo por WhatsApp.”
-          <strong>Lucas · 29 años · Socio hace 1 año</strong>
+          “Todo ordenado: clases, turnos y pagos. Me llega todo por WhatsApp, nunca me pierdo una clase.”
+          <strong>Lucas · 29 años</strong>
         </div>
         <div class="testi reveal">
           ⭐⭐⭐⭐⭐<br>
-          “Me mandan la rutina por WhatsApp, me recuerdan las clases y me hacen seguimiento. Es gimnasio y servicio en uno.”
-          <strong>Agustina · 34 años · Plan Transformación</strong>
+          “Como dueña, lo que más me gusta es que la web filtra consultas. Solo me hablan los que ya vieron los planes.”
+          <strong>Andrea · Gimnasio Zona Sur</strong>
         </div>
         <div class="testi reveal">
           ⭐⭐⭐⭐⭐<br>
-          “Como dueño, lo mejor es que las consultas llegan ordenadas. La web filtra todo antes de que hablen conmigo.”
-          <strong>Dueño de gimnasio (demo)</strong>
+          “Esta demo me ayudó a mostrarle a mi cliente lo que podíamos armar. Cerramos la venta en una sola reunión.”
+          <strong>Demo para vender servicios web</strong>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- HORARIOS + UBICACIÓN + CTA FINAL -->
+  <!-- HORARIOS & CONTACTO -->
   <section id="contacto">
     <div class="container">
-      <div class="chip reveal">
-        <span class="badge-dot"></span> Horarios & ubicación
-      </div>
       <h2 class="title reveal">Horarios de atención y ubicación</h2>
 
       <div class="grid">
         <div class="card reveal">
           <h3>Horarios</h3>
-          <table class="hours-table">
+          <table>
             <tr><td>Lunes a Viernes</td><td>7:00 a 22:00</td></tr>
             <tr><td>Sábados</td><td>8:00 a 18:00</td></tr>
             <tr><td>Domingos y feriados</td><td>Consultar por WhatsApp</td></tr>
           </table>
 
-          <h3 style="margin-top:20px;">Este demo puede ser tuyo</h3>
+          <h3 style="margin-top:18px;">Este demo puede ser tuyo</h3>
           <p style="margin-top:6px;">
-            Todo lo que viste en esta página es una DEMO pensada para mostrar lo que se puede hacer en tu gimnasio:
-            automatización, reservas, clases y ventas.
+            Todo lo que viste es demostración pensada para vender sitios web para gimnasios. Solo se cambian textos, fotos y colores por los de tu cliente.
           </p>
-          <button class="btn-primary" style="margin-top:16px;" onclick="openWhatsApp('Hola, vi la demo de gimnasio Pulse Fitness y quiero una web así para mi negocio')">
-            Quiero una web como esta
+          <button class="btn-primary" style="margin-top:16px;" onclick="openWhatsApp('Hola, vi la demo Pulse Fitness y quiero una web así para mi negocio')">
+            Quiero algo parecido
           </button>
         </div>
 
         <div class="card reveal">
-          <h3>Ubicación</h3>
-          <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:8px;">
+          <h3>Ubicación demo</h3>
+          <p style="font-size:.9rem;color:var(--muted);margin-bottom:8px;">
             Av. Demo Fitness 1234 · Barrio Centro · Ciudad
           </p>
           <iframe src="https://maps.google.com/maps?q=Buenos%20Aires&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
@@ -895,6 +892,7 @@ main {
       </div>
     </div>
   </section>
+
 </main>
 
 <footer>
@@ -904,136 +902,140 @@ main {
   </div>
 </footer>
 
-<!-- WhatsApp flotante -->
-<a href="https://wa.me/5490000000000" target="_blank" class="whatsapp-float">💬</a>
+<a class="whatsapp" href="https://wa.me/5490000000000" target="_blank">💬</a>
 
-<!-- JS -->
 <script>
-  const phoneNumber = "5490000000000"; // Cambiar por número real
+  const phoneNumber = "5490000000000"; // cambiar por número real
 
-  function openWhatsApp(message) {
+  function openWhatsApp(message){
     const url = "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message);
     window.open(url, "_blank");
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function(){
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.utils.toArray(".reveal").forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%"
-        },
-        y: 40,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out"
+    // ANIMACIONES REVEAL
+    gsap.utils.toArray(".reveal").forEach(el=>{
+      gsap.from(el,{
+        scrollTrigger:{trigger:el,start:"top 85%"},
+        y:30,
+        opacity:0,
+        duration:0.9,
+        ease:"power3.out"
       });
     });
 
-    gsap.utils.toArray(".reveal-scale").forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%"
-        },
-        scale: 0.9,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out"
+    // CONTADORES
+    const counters = document.querySelectorAll("[data-counter]");
+    let countersStarted = false;
+
+    function startCounters(){
+      if(countersStarted) return;
+      countersStarted = true;
+      counters.forEach(counter=>{
+        const target = parseInt(counter.getAttribute("data-target"),10);
+        let current = 0;
+        const increment = Math.max(1, Math.round(target / 120)); // ~2s
+        const interval = setInterval(()=>{
+          current += increment;
+          if(current >= target){
+            current = target;
+            clearInterval(interval);
+          }
+          counter.textContent = current;
+        },15);
       });
-    });
-
-    // THREE.JS HERO
-    const canvas = document.getElementById("hero-canvas");
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const geometry = new THREE.TorusKnotGeometry(10, 2.4, 150, 24);
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x00e0ff,
-      metalness: 0.5,
-      roughness: 0.2,
-      emissive: 0x001018
-    });
-    const torusKnot = new THREE.Mesh(geometry, material);
-    scene.add(torusKnot);
-
-    const light = new THREE.PointLight(0xffffff, 1.4);
-    light.position.set(20, 20, 20);
-    scene.add(light);
-
-    const backLight = new THREE.PointLight(0xff2e79, 0.9);
-    backLight.position.set(-20, -10, -10);
-    scene.add(backLight);
-
-    camera.position.z = 34;
-
-    function animate() {
-      requestAnimationFrame(animate);
-      torusKnot.rotation.x += 0.003;
-      torusKnot.rotation.y += 0.002;
-      renderer.render(scene, camera);
     }
-    animate();
 
-    window.addEventListener("resize", () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+    ScrollTrigger.create({
+      trigger:"#stats",
+      start:"top 80%",
+      once:true,
+      onEnter:startCounters
+    });
+
+    // SLIDER AUTOMÁTICO
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".slider-dot");
+    let currentSlide = 0;
+
+    function showSlide(index){
+      slides.forEach((s,i)=>s.classList.toggle("active", i === index));
+      dots.forEach((d,i)=>d.classList.toggle("active", i === index));
+      currentSlide = index;
+    }
+
+    dots.forEach(dot=>{
+      dot.addEventListener("click", ()=>{
+        const index = parseInt(dot.getAttribute("data-slide"),10);
+        showSlide(index);
+      });
+    });
+
+    setInterval(()=>{
+      const next = (currentSlide + 1) % slides.length;
+      showSlide(next);
+    }, 5000);
+
+    // SIMULADOR
+    const goalBtns = document.querySelectorAll("#goalOptions .sim-btn");
+    const dayBtns  = document.querySelectorAll("#daysOptions .sim-btn");
+    const simResult = document.getElementById("simResult");
+
+    function updateSim(){
+      const goal = document.querySelector("#goalOptions .sim-btn.active").dataset.goal;
+      const days = document.querySelector("#daysOptions .sim-btn.active").dataset.days;
+      let text = "";
+
+      if(goal === "bajar"){
+        if(days === "2"){
+          text = "Plan sugerido: <strong>Base</strong><br>· Musculación 2x por semana<br>· Rutina de adaptación<br>· Control cada 30 días<br>";
+        }else if(days === "3"){
+          text = "Plan sugerido: <strong>Full</strong><br>· Musculación + funcional 1x<br>· Déficit calórico guiado (demo)<br>· Seguimiento quincenal<br>";
+        }else{
+          text = "Plan sugerido: <strong>Transformación</strong><br>· 3 entrenos fuerza + 2 cardio<br>· Plan 90 días (demo)<br>· Revisión semanal por WhatsApp<br>";
+        }
+      }else if(goal === "masa"){
+        if(days === "2"){
+          text = "Plan sugerido: <strong>Base</strong><br>· Rutina full body 2x<br>· Enfoque en técnica<br>· Control cada 45 días<br>";
+        }else if(days === "3"){
+          text = "Plan sugerido: <strong>Full</strong><br>· Rutina torso/pierna 3x<br>· Registro de cargas (demo)<br>· Evaluación mensual<br>";
+        }else{
+          text = "Plan sugerido: <strong>Transformación</strong><br>· Programa hipertrofia 4-5x<br>· Soporte directo del coach<br>· Fotos comparativas cada 4 semanas<br>";
+        }
+      }else{
+        if(days === "2"){
+          text = "Plan sugerido: <strong>Base</strong><br>· Trabajo general fuerza + cardio<br>· Ideal para complementar otro deporte<br>";
+        }else if(days === "3"){
+          text = "Plan sugerido: <strong>Full</strong><br>· Enfoque rendimiento y core<br>· Funcional + fuerza 3x semana<br>";
+        }else{
+          text = "Plan sugerido: <strong>Transformación</strong><br>· Plan de alto rendimiento (demo)<br>· Entrenos específicos 4-5x<br>· Test de rendimiento cada mes<br>";
+        }
+      }
+      simResult.innerHTML = "Plan sugerido (demo):<br>" + text;
+    }
+
+    function attachSimListeners(btns){
+      btns.forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          btns.forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+          updateSim();
+        });
+      });
+    }
+    attachSimListeners(goalBtns);
+    attachSimListeners(dayBtns);
+    updateSim();
+
+    // MODO DÍA / NOCHE
+    const modeToggle = document.getElementById("modeToggle");
+    modeToggle.addEventListener("click", ()=>{
+      document.body.classList.toggle("light-mode");
     });
   });
-</script>
-<script>
-/* ✅ CONTADORES ANIMADOS */
-document.querySelectorAll(".counter").forEach(counter => {
-  const finalValue = +counter.dataset.value;
-  let start = 0;
-
-  const update = () => {
-    start += Math.ceil(finalValue / 60);
-    if (start < finalValue) {
-      counter.innerText = start;
-      requestAnimationFrame(update);
-    } else {
-      counter.innerText = finalValue;
-    }
-  };
-
-  update();
-});
-
-/* ✅ GALERÍA QUE CAMBIA SOLA CADA 24HS */
-const dailyImages = [
-  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
-  "https://images.unsplash.com/photo-1554344058-8d1d1dbc5960",
-  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b",
-  "https://images.unsplash.com/photo-1599058917212-d750089bc07c"
-];
-
-const today = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-const dailyIndex = today % dailyImages.length;
-
-document.querySelectorAll(".gallery-item img").forEach((img, index) => {
-  img.src = dailyImages[(dailyIndex + index) % dailyImages.length] + "?auto=format&fit=crop&w=900&q=80";
-});
-
-/* ✅ THREE.JS REACCIONA AL SCROLL */
-window.addEventListener("scroll", () => {
-  if (typeof torusKnot !== "undefined") {
-    const scrollY = window.scrollY * 0.002;
-    torusKnot.rotation.y = scrollY;
-    torusKnot.material.emissiveIntensity = 0.15 + scrollY * 0.2;
-  }
-});
 </script>
 
 </body>
 </html>
-
-
-
-
