@@ -181,14 +181,17 @@
     }
 
     /* HERO + THREE.JS */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      background: radial-gradient(circle at top, #1b2236, #050509);
-    }
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(5,5,9,0.85), rgba(5,5,9,0.95)),
+    url("https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1600&q=80")
+    center/cover no-repeat;
+}
     #hero-canvas {
       position: absolute;
       inset: 0;
@@ -1026,5 +1029,6 @@ window.addEventListener("scroll", () => {
 
 </body>
 </html>
+
 
 
