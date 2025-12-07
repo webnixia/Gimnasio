@@ -538,10 +538,13 @@
       text-decoration:none;
     }
 
-    /* REVEAL BASE */
+    /* REVEAL BASE
+       -> AHORA POR DEFECTO SE VE TODO.
+       GSAP SOLO AGREGA EL EFECTO SI CARGA BIEN.
+    */
     .reveal{
-      opacity:0;
-      transform:translateY(30px);
+      opacity:1;
+      transform:none;
     }
   </style>
 </head>
@@ -913,18 +916,24 @@
   }
 
   document.addEventListener("DOMContentLoaded", function(){
-    gsap.registerPlugin(ScrollTrigger);
+    if (window.gsap) {
+      if (window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+      }
 
-    // ANIMACIONES REVEAL
-    gsap.utils.toArray(".reveal").forEach(el=>{
-      gsap.from(el,{
-        scrollTrigger:{trigger:el,start:"top 85%"},
-        y:30,
-        opacity:0,
-        duration:0.9,
-        ease:"power3.out"
-      });
-    });
+      // ANIMACIONES REVEAL (si ScrollTrigger está)
+      if (window.ScrollTrigger) {
+        gsap.utils.toArray(".reveal").forEach(el=>{
+          gsap.from(el,{
+            scrollTrigger:{trigger:el,start:"top 85%"},
+            y:30,
+            opacity:0,
+            duration:0.9,
+            ease:"power3.out"
+          });
+        });
+      }
+    }
 
     // CONTADORES
     const counters = document.querySelectorAll("[data-counter]");
@@ -948,12 +957,17 @@
       });
     }
 
-    ScrollTrigger.create({
-      trigger:"#stats",
-      start:"top 80%",
-      once:true,
-      onEnter:startCounters
-    });
+    if (window.ScrollTrigger && window.gsap) {
+      ScrollTrigger.create({
+        trigger:"#stats",
+        start:"top 80%",
+        once:true,
+        onEnter:startCounters
+      });
+    } else {
+      // si no hay ScrollTrigger, arrancamos contadores igual
+      startCounters();
+    }
 
     // SLIDER AUTOMÁTICO
     const slides = document.querySelectorAll(".slide");
