@@ -144,9 +144,12 @@
     }
 
     /* LAYOUT BASE */
-    main {
-      padding-top: 80px;
-    }
+main {
+  padding-top: 80px;
+  position: relative;
+  z-index: 5;
+  background: radial-gradient(circle at top, #101427, #050509);
+}
     section {
       padding: 90px 20px;
     }
@@ -192,11 +195,12 @@
     url("https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1600&q=80")
     center/cover no-repeat;
 }
-    #hero-canvas {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
     .hero-inner {
       position: relative;
       z-index: 2;
@@ -1029,6 +1033,7 @@ window.addEventListener("scroll", () => {
 
 </body>
 </html>
+
 
 
 
